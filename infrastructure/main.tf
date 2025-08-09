@@ -97,3 +97,47 @@ resource "aws_route_table_association" "mes_public_rta_2" {
   subnet_id      = aws_subnet.mes_public_subnet_2.id
   route_table_id = aws_route_table.mes_public_rt.id
 }
+
+# NAT Gateway
+resource "aws_eip" "mes_nat_eip" {
+  domain = "vpc"
+  
+  tags = {
+    Name = "mes-nat-eip"
+  }
+}
+
+resource "aws_nat_gateway" "mes_nat_gw" {
+  allocation_id = aws_eip.mes_nat_eip.id
+  subnet_id     = aws_subnet.mes_public_subnet_1.id
+
+  tags = {
+    Name = "mes-nat-gw"
+  }
+
+  depends_on = [aws_internet_gateway.mes_igw]
+}
+
+# Private Route Table
+resource "aws_route_table" "mes_private_rt" {
+  vpc_id = aws_vpc.mes_vpc.id
+
+  route {
+    cidr_block     = "0.0.0.0/0"
+    nat_gateway_id = aws_nat_gateway.mes_nat_gw.id
+  }
+
+  tags = {
+    Name = "mes-private-rt"
+  }
+}
+
+resource "aws_route_table_association" "mes_private_rta_1" {
+  subnet_id      = aws_subnet.mes_private_subnet_1.id
+  route_table_id = aws_route_table.mes_private_rt.id
+}
+
+resource "aws_route_table_association" "mes_private_rta_2" {
+  subnet_id      = aws_subnet.mes_private_subnet_2.id
+  route_table_id = aws_route_table.mes_private_rt.id
+}

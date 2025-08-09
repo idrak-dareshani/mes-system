@@ -30,7 +30,7 @@ const QualityControl = () => {
 
   const fetchChecks = async () => {
     try {
-      const response = await axios.get('/quality-checks/');
+      const response = await axios.get('/api/quality-checks/');
       setChecks(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
       console.error('Error fetching checks:', error);
@@ -40,7 +40,7 @@ const QualityControl = () => {
 
   const fetchOrders = async () => {
     try {
-      const response = await axios.get('/production-orders/');
+      const response = await axios.get('/api/production-orders/');
       const activeOrders = response.data.filter(order => order.status === 'active' || order.status === 'pending');
       setOrders(Array.isArray(activeOrders) ? activeOrders : []);
     } catch (error) {
@@ -66,9 +66,9 @@ const QualityControl = () => {
       };
       
       if (editCheck) {
-        await axios.put(`/quality-checks/${editCheck.id}`, data);
+        await axios.put(`/api/quality-checks/${editCheck.id}`, data);
       } else {
-        await axios.post('/quality-checks/', data);
+        await axios.post('/api/quality-checks/', data);
       }
       fetchChecks();
       handleClose();
@@ -79,7 +79,7 @@ const QualityControl = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`/quality-checks/${id}`);
+      await axios.delete(`/api/quality-checks/${id}`);
       fetchChecks();
     } catch (error) {
       console.error('Error deleting check:', error);

@@ -36,7 +36,7 @@ resource "aws_security_group" "mes_rds_sg" {
 resource "aws_db_instance" "mes_postgres" {
   identifier     = "mes-postgres"
   engine         = "postgres"
-  engine_version = "15.4"
+  engine_version = "15.7"
   instance_class = "db.t3.micro"
   
   allocated_storage     = 20

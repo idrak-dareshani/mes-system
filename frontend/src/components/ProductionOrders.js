@@ -27,7 +27,7 @@ const ProductionOrders = () => {
 
   const fetchOrders = async () => {
     try {
-      const response = await axios.get('/production-orders/');
+      const response = await axios.get('/api/production-orders/');
       setOrders(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
       console.error('Error fetching orders:', error);
@@ -44,9 +44,9 @@ const ProductionOrders = () => {
       };
       
       if (editOrder) {
-        await axios.put(`/production-orders/${editOrder.id}`, data);
+        await axios.put(`/api/production-orders/${editOrder.id}`, data);
       } else {
-        await axios.post('/production-orders/', data);
+        await axios.post('/api/production-orders/', data);
       }
       fetchOrders();
       handleClose();
@@ -58,7 +58,7 @@ const ProductionOrders = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`/production-orders/${id}`);
+      await axios.delete(`/api/production-orders/${id}`);
       fetchOrders();
     } catch (error) {
       console.error('Error deleting order:', error);

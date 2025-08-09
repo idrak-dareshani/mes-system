@@ -19,16 +19,34 @@ const Dashboard = () => {
 
   const fetchDashboardData = async () => {
     try {
-      const response = await axios.get('/production-orders/');
+      const response = await axios.get('/api/production-orders/');
       const orders = response.data;
+      
+      // Ensure orders is an array
+      if (Array.isArray(orders)) {
+        setStats({
+          activeOrders: orders.filter(o => o.status === 'active').length,
+          completedToday: orders.filter(o => o.status === 'completed').length,
+          qualityRate: 98.5,
+          efficiency: 87.2
+        });
+      } else {
+        console.error('Expected array but got:', typeof orders, orders);
+        setStats({
+          activeOrders: 0,
+          completedToday: 0,
+          qualityRate: 98.5,
+          efficiency: 87.2
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching dashboard data:', error);
       setStats({
-        activeOrders: orders.filter(o => o.status === 'active').length,
-        completedToday: orders.filter(o => o.status === 'completed').length,
+        activeOrders: 0,
+        completedToday: 0,
         qualityRate: 98.5,
         efficiency: 87.2
       });
-    } catch (error) {
-      console.error('Error fetching dashboard data:', error);
     }
   };
 

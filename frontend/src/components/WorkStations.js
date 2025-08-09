@@ -25,7 +25,7 @@ const WorkStations = () => {
 
   const fetchStations = async () => {
     try {
-      const response = await axios.get('/workstations/');
+      const response = await axios.get('/api/workstations/');
       setStations(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
       console.error('Error fetching stations:', error);
@@ -36,9 +36,9 @@ const WorkStations = () => {
   const handleSubmit = async () => {
     try {
       if (editStation) {
-        await axios.put(`/workstations/${editStation.id}`, formData);
+        await axios.put(`/api/workstations/${editStation.id}`, formData);
       } else {
-        await axios.post('/workstations/', formData);
+        await axios.post('/api/workstations/', formData);
       }
       fetchStations();
       handleClose();
@@ -49,7 +49,7 @@ const WorkStations = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`/workstations/${id}`);
+      await axios.delete(`/api/workstations/${id}`);
       fetchStations();
     } catch (error) {
       console.error('Error deleting station:', error);
